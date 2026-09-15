@@ -4,7 +4,7 @@ A self-directed project showing what an ERP/systems implementation and process o
 
 **Skills shown:** SQL (schema design, exception-based reconciliation) · Python (ETL, data migration, automation) · data modeling & de-duplication · process redesign · KPI reporting · Power BI (documented) · project documentation (charter through post-launch runbook)
 
-## [Live dashboard](https://sutejmeghawala.github.io/erp-implementation-case-study/)
+## [Live dashboard](https://sutejmeghawala.github.io/ERP-implementation-case-study/)
 
 ![Dashboard preview showing four KPI tiles — reconciliation cycle time, vendor payment turnaround, invoice error rate, and open backlog items — each down sharply after go-live, plus a line chart of vendor payment turnaround by month](assets/dashboard-preview.png)
 
