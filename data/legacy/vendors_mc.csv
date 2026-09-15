@@ -1,0 +1,13 @@
+vendor_id,vendor_name,active,payment_terms,tax_id,category
+MC-V101,Northgate Facilities Maintenance,1,N30,BN819595113RT0001,Facilities
+MC-V102,BrightPath IT Solutions,0,N30,BN275452091RT0001,IT Services
+MC-V103,Coastal Office Supply Co.,0,N30,BN790256940RT0001,Office Supplies
+MC-V104,Evergreen Landscaping Group,1,N30,BN830661141RT0001,Landscaping
+MC-V105,SENTINEL SECURITY SERVICES,0,N30,BN906248900RT0001,Security
+MC-V106,Summit Utilities Consulting,1,N30,BN501486939RT0001,Utilities
+MC-V107,Fraser Valley Electrical,0,N30,,Facilities
+MC-V108,Peak Fleet Maintenance,0,N45,BN865523129RT0001,Fleet
+MC-V109,Bluepine HVAC Systems,1,N15,,Facilities
+MC-V110,Cascade Waste Management,1,N30,BN217326729RT0001,Waste
+MC-V111,ALDERGROVE SIGNAGE & PRINT,1,N30,BN596743109RT0001,Marketing
+MC-V112,Granite Ridge Contractors,1,N45,BN721890096RT0001,Facilities

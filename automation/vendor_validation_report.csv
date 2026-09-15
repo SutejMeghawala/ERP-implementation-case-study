@@ -1,0 +1,10 @@
+vendor_id,vendor_name,issue_code,detail
+1,Coastal Office Supply Co.,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian North, Meridian West, Meridian Coastal) -- resolve before payment."
+2,Evergreen Landscaping Group,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian North, Meridian West, Meridian Coastal) -- resolve before payment."
+4,Summit Utilities Consulting,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian North, Meridian Coastal) -- resolve before payment."
+7,Redwood Legal Partners,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian North, Meridian West) -- resolve before payment."
+8,Cascade Waste Management,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian North, Meridian West, Meridian Coastal) -- resolve before payment."
+10,Sentinel Security Services,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian West, Meridian Coastal) -- resolve before payment."
+11,Fraser Valley Electrical,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian West, Meridian Coastal) -- resolve before payment."
+13,Silverline Telecom,MISSING_TAX_ID,No tax ID on file -- required before first payment run.
+14,Granite Ridge Contractors,CONFLICTING_ACTIVE_STATUS,"Active status disagrees across entities (Meridian West, Meridian Coastal) -- resolve before payment."

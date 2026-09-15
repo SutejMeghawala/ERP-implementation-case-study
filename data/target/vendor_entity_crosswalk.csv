@@ -1,0 +1,32 @@
+vendor_id,vendor_name,entity,legacy_vendor_id,legacy_active_flag
+1,Coastal Office Supply Co.,Meridian North,MN-V101,N
+2,Evergreen Landscaping Group,Meridian North,MN-V102,Y
+3,Clearwater Cleaning Co.,Meridian North,MN-V103,N
+4,Summit Utilities Consulting,Meridian North,MN-V104,N
+5,Harborline Professional Services,Meridian North,MN-V105,N
+6,Bluepine HVAC Systems,Meridian North,MN-V106,Y
+7,Redwood Legal Partners,Meridian North,MN-V107,N
+8,Cascade Waste Management,Meridian North,MN-V108,Y
+9,Nightingale Payroll Services,Meridian North,MN-V109,N
+1,Coastal Office Supply Co.,Meridian West,MW-V101,Yes
+2,Evergreen Landscaping Group,Meridian West,MW-V102,No
+10,Sentinel Security Services,Meridian West,MW-V103,Yes
+5,Harborline Professional Services,Meridian West,MW-V104,No
+11,Fraser Valley Electrical,Meridian West,MW-V105,Yes
+7,Redwood Legal Partners,Meridian West,MW-V106,Yes
+8,Cascade Waste Management,Meridian West,MW-V107,No
+12,Union Bay Insurance Brokers,Meridian West,MW-V108,Yes
+13,Silverline Telecom,Meridian West,MW-V109,No
+14,Granite Ridge Contractors,Meridian West,MW-V110,No
+15,Northgate Facilities Maintenance,Meridian Coastal,MC-V101,1
+16,Brightpath IT Solutions,Meridian Coastal,MC-V102,0
+1,Coastal Office Supply Co.,Meridian Coastal,MC-V103,0
+2,Evergreen Landscaping Group,Meridian Coastal,MC-V104,1
+10,Sentinel Security Services,Meridian Coastal,MC-V105,0
+4,Summit Utilities Consulting,Meridian Coastal,MC-V106,1
+11,Fraser Valley Electrical,Meridian Coastal,MC-V107,0
+17,Peak Fleet Maintenance,Meridian Coastal,MC-V108,0
+6,Bluepine HVAC Systems,Meridian Coastal,MC-V109,1
+8,Cascade Waste Management,Meridian Coastal,MC-V110,1
+18,Aldergrove Signage & Print,Meridian Coastal,MC-V111,1
+14,Granite Ridge Contractors,Meridian Coastal,MC-V112,1

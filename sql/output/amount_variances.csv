@@ -1,0 +1,22 @@
+invoice_id,entity_name,vendor_name,invoice_amount,bank_amount,variance,period
+MN-INV5028,Meridian North,Redwood Legal Partners,16753.79,16759.04,5.25,after
+MN-INV5040,Meridian North,Evergreen Landscaping Group,16327.93,16333.18,5.25,before
+MN-INV5069,Meridian North,Evergreen Landscaping Group,7123.17,7098.17,-25.0,before
+MN-INV5087,Meridian North,Harborline Professional Services,15273.91,15279.16,5.25,before
+MN-INV5161,Meridian North,Redwood Legal Partners,10854.36,10829.36,-25.0,after
+MN-INV5179,Meridian North,Harborline Professional Services,14256.1,14245.6,-10.5,before
+MW-INV5002,Meridian West,Fraser Valley Electrical,2220.7,2195.7,-25.0,before
+MW-INV5070,Meridian West,Evergreen Landscaping Group,169.93,175.18,5.25,before
+MW-INV5090,Meridian West,Union Bay Insurance Brokers,13590.7,13595.95,5.25,before
+MW-INV5137,Meridian West,Redwood Legal Partners,5859.11,5848.61,-10.5,before
+MW-INV5153,Meridian West,Union Bay Insurance Brokers,14443.57,14448.82,5.25,before
+MW-INV5163,Meridian West,Evergreen Landscaping Group,14425.55,14443.55,18.0,before
+MW-INV5171,Meridian West,Granite Ridge Contractors,13495.56,13500.81,5.25,before
+MC-INV5040,Meridian Coastal,Sentinel Security Services,14203.51,14178.51,-25.0,after
+MC-INV5065,Meridian Coastal,Bluepine HVAC Systems,15863.27,15881.27,18.0,after
+MC-INV5066,Meridian Coastal,Peak Fleet Maintenance,9637.08,9612.08,-25.0,before
+MC-INV5075,Meridian Coastal,Sentinel Security Services,4689.73,4694.98,5.25,before
+MC-INV5117,Meridian Coastal,Sentinel Security Services,18273.41,18262.91,-10.5,before
+MC-INV5125,Meridian Coastal,Aldergrove Signage & Print,6671.19,6676.44,5.25,before
+MC-INV5134,Meridian Coastal,Evergreen Landscaping Group,17131.73,17149.73,18.0,before
+MC-INV5170,Meridian Coastal,Cascade Waste Management,16522.66,16540.66,18.0,before

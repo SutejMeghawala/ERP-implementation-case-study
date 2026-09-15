@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Meridian Group — ERP Reconciliation Dashboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:            #f9f9f7;
+    --surface-1:       #fcfcfb;
+    --text-primary:    #0b0b0b;
+    --text-secondary:  #52514e;
+    --text-muted:      #898781;
+    --gridline:        #e1e0d9;
+    --baseline:        #c3c2b7;
+    --border:          rgba(11,11,11,0.10);
+    --series-1:        #2a78d6;   /* blue — sequential default */
+    --series-1-wash:   rgba(42,120,214,0.10);
+    --success-text:    #006300;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:            #0d0d0d;
+      --surface-1:       #1a1a19;
+      --text-primary:    #ffffff;
+      --text-secondary:  #c3c2b7;
+      --text-muted:      #898781;
+      --gridline:        #2c2c2a;
+      --baseline:        #383835;
+      --border:          rgba(255,255,255,0.10);
+      --series-1:        #3987e5;
+      --series-1-wash:   rgba(57,135,229,0.14);
+      --success-text:    #0ca30c;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:            #0d0d0d;
+    --surface-1:       #1a1a19;
+    --text-primary:    #ffffff;
+    --text-secondary:  #c3c2b7;
+    --text-muted:      #898781;
+    --gridline:        #2c2c2a;
+    --baseline:        #383835;
+    --border:          rgba(255,255,255,0.10);
+    --series-1:        #3987e5;
+    --series-1-wash:   rgba(57,135,229,0.14);
+    --success-text:    #0ca30c;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 4px; flex-wrap: wrap; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.92rem; max-width: 640px; }
+  .note {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 14px; font-size: 0.82rem; color: var(--text-secondary); margin: 16px 0 28px;
+  }
+  button.theme-toggle {
+    background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer;
+  }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 32px; }
+  .stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .stat-tile .label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 8px; }
+  .stat-tile .value { font-size: 1.5rem; font-weight: 600; }
+  .stat-tile .delta { font-size: 0.82rem; margin-top: 4px; }
+  .stat-tile .delta.good { color: var(--success-text); }
+  .stat-tile .subvalue { font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; }
+
+  .chart-card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 20px 12px; margin-bottom: 22px; position: relative;
+  }
+  .chart-card h2 { font-size: 0.98rem; margin: 0 0 2px; }
+  .chart-card .chart-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+  .chart-controls { position: absolute; top: 16px; right: 18px; }
+  .chart-controls button {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    border-radius: 6px; font-size: 0.72rem; padding: 3px 9px; cursor: pointer;
+  }
+
+  svg.chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .axis-label { fill: var(--text-muted); font-size: 10px; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .go-live-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  .go-live-label { fill: var(--text-muted); font-size: 9.5px; }
+  .mark-line { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .mark-area { fill: var(--series-1-wash); }
+  .mark-dot { fill: var(--series-1); stroke: var(--surface-1); stroke-width: 2; }
+  .mark-bar { fill: var(--series-1); }
+  .hit-area { fill: transparent; }
+  .crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; pointer-events: none; }
+
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 8px; }
+  table.data-table th, table.data-table td {
+    text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--gridline);
+    font-variant-numeric: tabular-nums;
+  }
+  table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+  table.data-table th { color: var(--text-secondary); font-weight: 600; }
+
+  .tooltip {
+    position: absolute; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
+    font-size: 0.75rem; padding: 6px 9px; border-radius: 6px; transform: translate(-50%, -110%);
+    white-space: nowrap; opacity: 0; transition: opacity 0.08s ease;
+  }
+  .tooltip .tt-value { font-weight: 600; }
+  .tooltip .tt-label { color: var(--text-muted); }
+
+  footer { color: var(--text-muted); font-size: 0.76rem; margin-top: 30px; }
+  a { color: var(--series-1); }
+  .fallback { display: none; padding: 30px; text-align: center; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Meridian Group — Reconciliation &amp; Process Optimization</h1>
+      <div class="subtitle">Multi-entity ERP data migration case study — before/after impact of the standardized reconciliation and vendor-setup process, computed directly from the migrated dataset.</div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">Toggle theme</button>
+  </header>
+
+  <div class="note">
+    Meridian Group is fictitious and all data here is synthetic, generated by the scripts in <code>/etl</code> — see the README for the full write-up and how to reproduce these numbers.
+  </div>
+
+  <div id="dashboardRoot"></div>
+
+  <div class="fallback" id="fallback">
+    Something went wrong rendering the dashboard data. Try a hard refresh — if that doesn't fix it,
+    rebuild this page with <code>python etl/invoice_integration_simulation.py</code>.
+  </div>
+
+  <footer>Go-live date: 2025-07-01. Generated by <code>etl/invoice_integration_simulation.py</code>.</footer>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+window.__KPI_DATA__ = /*__KPI_DATA_JSON__*/{}/*__END_KPI_DATA_JSON__*/;
+</script>
+<script>
+(function () {
+  "use strict";
+
+  const root = document.getElementById("dashboardRoot");
+  const tooltip = document.getElementById("tooltip");
+  const themeToggle = document.getElementById("themeToggle");
+
+  themeToggle.addEventListener("click", () => {
+    const de = document.documentElement;
+    const current = de.getAttribute("data-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (!current) de.setAttribute("data-theme", prefersDark ? "light" : "dark");
+    else if (current === "dark") de.setAttribute("data-theme", "light");
+    else de.removeAttribute("data-theme");
+  });
+
+  function fmtDays(v) { return (v === null || v === undefined) ? "—" : v.toFixed(1) + "d"; }
+  function fmtPct(v) { return (v === null || v === undefined) ? "—" : v.toFixed(1) + "%"; }
+
+  function statTile(label, valueHtml, deltaText, subText) {
+    const el = document.createElement("div");
+    el.className = "stat-tile";
+    el.innerHTML =
+      `<div class="label"></div><div class="value"></div>` +
+      (deltaText ? `<div class="delta good"></div>` : "") +
+      (subText ? `<div class="subvalue"></div>` : "");
+    el.querySelector(".label").textContent = label;
+    el.querySelector(".value").textContent = valueHtml;
+    if (deltaText) el.querySelector(".delta").textContent = deltaText;
+    if (subText) el.querySelector(".subvalue").textContent = subText;
+    return el;
+  }
+
+  function showTooltip(x, y, labelText, valueText) {
+    tooltip.innerHTML = "";
+    const val = document.createElement("div");
+    val.className = "tt-value";
+    val.textContent = valueText;
+    const lab = document.createElement("div");
+    lab.className = "tt-label";
+    lab.textContent = labelText;
+    tooltip.appendChild(val);
+    tooltip.appendChild(lab);
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+    tooltip.style.opacity = "1";
+  }
+  function hideTooltip() { tooltip.style.opacity = "0"; }
+
+  function monthLabel(m) {
+    const [y, mo] = m.split("-");
+    const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return names[parseInt(mo, 10) - 1] + " " + y.slice(2);
+  }
+
+  // Generic line chart. data: [{month, value}]. Draws a 2px rounded line,
+  // an end-dot, a dashed go-live marker, hairline gridlines, a crosshair +
+  // single-series tooltip, and a sparse x-axis (every other month).
+  function lineChart(container, data, opts) {
+    const W = 760, H = 220, padL = 40, padR = 12, padT = 16, padB = 28;
+    const values = data.map(d => d.value).filter(v => v !== null && v !== undefined);
+    const maxV = Math.max(...values) * 1.15;
+    const minV = 0;
+    const innerW = W - padL - padR, innerH = H - padT - padB;
+
+    const x = i => padL + (innerW * i) / (data.length - 1);
+    const y = v => padT + innerH - (innerH * (v - minV)) / (maxV - minV);
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.classList.add("chart-svg");
+
+    // gridlines (4 horizontal steps)
+    const steps = 4;
+    for (let s = 0; s <= steps; s++) {
+      const v = (maxV / steps) * s;
+      const yy = y(v);
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", padL); line.setAttribute("x2", W - padR);
+      line.setAttribute("y1", yy); line.setAttribute("y2", yy);
+      line.setAttribute("class", s === 0 ? "baseline" : "gridline");
+      svg.appendChild(line);
+      const label = document.createElementNS(svgNS, "text");
+      label.setAttribute("x", padL - 8); label.setAttribute("y", yy + 3);
+      label.setAttribute("text-anchor", "end");
+      label.setAttribute("class", "axis-label");
+      label.textContent = opts.unit === "%" ? Math.round(v) + "%" : Math.round(v);
+      svg.appendChild(label);
+    }
+
+    // go-live marker
+    const goLiveIdx = data.findIndex(d => d.month === opts.goLiveMonth);
+    if (goLiveIdx > -1) {
+      const gx = x(goLiveIdx);
+      const gl = document.createElementNS(svgNS, "line");
+      gl.setAttribute("x1", gx); gl.setAttribute("x2", gx);
+      gl.setAttribute("y1", padT); gl.setAttribute("y2", H - padB);
+      gl.setAttribute("class", "go-live-line");
+      svg.appendChild(gl);
+      const glabel = document.createElementNS(svgNS, "text");
+      glabel.setAttribute("x", gx + 4); glabel.setAttribute("y", padT + 10);
+      glabel.setAttribute("class", "go-live-label");
+      glabel.textContent = "Go-live";
+      svg.appendChild(glabel);
+    }
+
+    // path
+    let d = "";
+    data.forEach((pt, i) => {
+      if (pt.value === null || pt.value === undefined) return;
+      d += (d === "" ? "M" : "L") + x(i).toFixed(1) + " " + y(pt.value).toFixed(1) + " ";
+    });
+    const path = document.createElementNS(svgNS, "path");
+    path.setAttribute("d", d.trim());
+    path.setAttribute("class", "mark-line");
+    svg.appendChild(path);
+
+    // x-axis labels (sparse)
+    data.forEach((pt, i) => {
+      if (i % 2 !== 0 && i !== data.length - 1) return;
+      const label = document.createElementNS(svgNS, "text");
+      label.setAttribute("x", x(i)); label.setAttribute("y", H - 8);
+      label.setAttribute("text-anchor", "middle");
+      label.setAttribute("class", "axis-label");
+      label.textContent = monthLabel(pt.month);
+      svg.appendChild(label);
+    });
+
+    // crosshair
+    const crosshair = document.createElementNS(svgNS, "line");
+    crosshair.setAttribute("y1", padT); crosshair.setAttribute("y2", H - padB);
+    crosshair.setAttribute("class", "crosshair");
+    svg.appendChild(crosshair);
+
+    // end dot
+    const lastPt = [...data].reverse().find(p => p.value !== null && p.value !== undefined);
+    if (lastPt) {
+      const idx = data.indexOf(lastPt);
+      const dot = document.createElementNS(svgNS, "circle");
+      dot.setAttribute("cx", x(idx)); dot.setAttribute("cy", y(lastPt.value)); dot.setAttribute("r", 4);
+      dot.setAttribute("class", "mark-dot");
+      svg.appendChild(dot);
+    }
+
+    // hit area for hover
+    const hit = document.createElementNS(svgNS, "rect");
+    hit.setAttribute("x", padL); hit.setAttribute("y", padT);
+    hit.setAttribute("width", innerW); hit.setAttribute("height", innerH);
+    hit.setAttribute("class", "hit-area");
+    svg.appendChild(hit);
+
+    hit.addEventListener("pointermove", (e) => {
+      const rect = svg.getBoundingClientRect();
+      const scale = rect.width / W;
+      const mx = (e.clientX - rect.left) / scale;
+      let idx = Math.round(((mx - padL) / innerW) * (data.length - 1));
+      idx = Math.max(0, Math.min(data.length - 1, idx));
+      const pt = data[idx];
+      crosshair.setAttribute("x1", x(idx)); crosshair.setAttribute("x2", x(idx));
+      crosshair.style.opacity = "1";
+      const valText = opts.unit === "%" ? fmtPct(pt.value) : fmtDays(pt.value);
+      showTooltip(e.clientX, rect.top + y(pt.value || 0) + window.scrollY, monthLabel(pt.month), valText);
+    });
+    hit.addEventListener("pointerleave", () => { crosshair.style.opacity = "0"; hideTooltip(); });
+
+    container.appendChild(svg);
+  }
+
+  function barChart(container, data, opts) {
+    const W = 760, H = 220, padL = 40, padR = 12, padT = 16, padB = 28;
+    const maxV = Math.max(...data.map(d => d.value), 1) * 1.2;
+    const innerW = W - padL - padR, innerH = H - padT - padB;
+    const gap = 4;
+    const barW = Math.min(24, innerW / data.length - gap);
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.classList.add("chart-svg");
+
+    const steps = 4;
+    for (let s = 0; s <= steps; s++) {
+      const v = (maxV / steps) * s;
+      const yy = padT + innerH - (innerH * v) / maxV;
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", padL); line.setAttribute("x2", W - padR);
+      line.setAttribute("y1", yy); line.setAttribute("y2", yy);
+      line.setAttribute("class", s === 0 ? "baseline" : "gridline");
+      svg.appendChild(line);
+      const label = document.createElementNS(svgNS, "text");
+      label.setAttribute("x", padL - 8); label.setAttribute("y", yy + 3);
+      label.setAttribute("text-anchor", "end");
+      label.setAttribute("class", "axis-label");
+      label.textContent = Math.round(v);
+      svg.appendChild(label);
+    }
+
+    data.forEach((pt, i) => {
+      const slot = innerW / data.length;
+      const cx = padL + slot * i + slot / 2;
+      const barH = (innerH * pt.value) / maxV;
+      const yTop = padT + innerH - barH;
+
+      const rect = document.createElementNS(svgNS, "rect");
+      rect.setAttribute("x", (cx - barW / 2).toFixed(1));
+      rect.setAttribute("y", yTop.toFixed(1));
+      rect.setAttribute("width", barW.toFixed(1));
+      rect.setAttribute("height", Math.max(barH, 0).toFixed(1));
+      rect.setAttribute("rx", 4);
+      rect.setAttribute("class", "mark-bar");
+      svg.appendChild(rect);
+
+      const hit = document.createElementNS(svgNS, "rect");
+      hit.setAttribute("x", (padL + slot * i).toFixed(1));
+      hit.setAttribute("y", padT); hit.setAttribute("width", slot.toFixed(1)); hit.setAttribute("height", innerH);
+      hit.setAttribute("class", "hit-area");
+      svg.appendChild(hit);
+      hit.addEventListener("pointermove", (e) => {
+        const rect2 = svg.getBoundingClientRect();
+        showTooltip(e.clientX, rect2.top + yTop + window.scrollY, monthLabel(pt.month), pt.value + " open item" + (pt.value === 1 ? "" : "s"));
+      });
+      hit.addEventListener("pointerleave", hideTooltip);
+
+      if (i % 2 === 0 || i === data.length - 1) {
+        const label = document.createElementNS(svgNS, "text");
+        label.setAttribute("x", cx); label.setAttribute("y", H - 8);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("class", "axis-label");
+        label.textContent = monthLabel(pt.month);
+        svg.appendChild(label);
+      }
+    });
+
+    container.appendChild(svg);
+  }
+
+  function chartCard(title, sub, dataForTable, columns) {
+    const card = document.createElement("div");
+    card.className = "chart-card";
+    const h2 = document.createElement("h2"); h2.textContent = title;
+    const subEl = document.createElement("div"); subEl.className = "chart-sub"; subEl.textContent = sub;
+    const controls = document.createElement("div"); controls.className = "chart-controls";
+    const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "View as table";
+    controls.appendChild(btn);
+    const chartHolder = document.createElement("div");
+    const tableHolder = document.createElement("div");
+    tableHolder.style.display = "none";
+
+    const table = document.createElement("table");
+    table.className = "data-table";
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    columns.forEach(c => { const th = document.createElement("th"); th.textContent = c.label; headRow.appendChild(th); });
+    thead.appendChild(headRow); table.appendChild(thead);
+    const tbody = document.createElement("tbody");
+    dataForTable.forEach(row => {
+      const tr = document.createElement("tr");
+      columns.forEach(c => { const td = document.createElement("td"); td.textContent = c.get(row); tr.appendChild(td); });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    tableHolder.appendChild(table);
+
+    let showingTable = false;
+    btn.addEventListener("click", () => {
+      showingTable = !showingTable;
+      chartHolder.style.display = showingTable ? "none" : "block";
+      tableHolder.style.display = showingTable ? "block" : "none";
+      btn.textContent = showingTable ? "View as chart" : "View as table";
+    });
+
+    card.appendChild(h2); card.appendChild(subEl); card.appendChild(controls);
+    card.appendChild(chartHolder); card.appendChild(tableHolder);
+    return { card, chartHolder };
+  }
+
+  function render(summary) {
+    // --- KPI row ---
+    const kpiRow = document.createElement("div");
+    kpiRow.className = "kpi-row";
+
+    kpiRow.appendChild(statTile(
+      "Reconciliation cycle time",
+      fmtDays(summary.cycle_time.after_days),
+      "▼ " + fmtPct(summary.cycle_time.pct_improvement) + " vs. before",
+      fmtDays(summary.cycle_time.before_days) + " before go-live"
+    ));
+    kpiRow.appendChild(statTile(
+      "Vendor payment turnaround",
+      fmtDays(summary.vendor_turnaround.after_days),
+      "▼ " + fmtPct(summary.vendor_turnaround.pct_improvement) + " vs. before",
+      fmtDays(summary.vendor_turnaround.before_days) + " before go-live"
+    ));
+    kpiRow.appendChild(statTile(
+      "Invoice error rate",
+      fmtPct(summary.error_rate.after_pct),
+      "▼ " + fmtPct(summary.error_rate.pct_improvement) + " vs. before",
+      fmtPct(summary.error_rate.before_pct) + " before go-live"
+    ));
+    kpiRow.appendChild(statTile(
+      "Open backlog items",
+      String(summary.backlog_open_items),
+      null,
+      summary.unmatched_bank_transactions + " unmatched bank txns · " + summary.amount_variances + " variances flagged"
+    ));
+    root.appendChild(kpiRow);
+
+    // --- Monthly turnaround trend ---
+    const turnaroundData = summary.monthly_trend.map(m => ({ month: m.month, value: m.avg_turnaround_days }));
+    const c1 = chartCard(
+      "Vendor payment turnaround by month",
+      "Average days from invoice date to paid date",
+      summary.monthly_trend,
+      [
+        { label: "Month", get: r => monthLabel(r.month) },
+        { label: "Avg turnaround (days)", get: r => r.avg_turnaround_days ?? "—" },
+        { label: "Invoices", get: r => r.invoice_count },
+      ]
+    );
+    root.appendChild(c1.card);
+    lineChart(c1.chartHolder, turnaroundData, { unit: "days", goLiveMonth: "2025-07" });
+
+    // --- Monthly error rate trend ---
+    const errorData = summary.monthly_trend.map(m => ({ month: m.month, value: m.error_rate_pct }));
+    const c2 = chartCard(
+      "Invoice error rate by month",
+      "Share of invoices flagged as a duplicate entry or missing a PO reference",
+      summary.monthly_trend,
+      [
+        { label: "Month", get: r => monthLabel(r.month) },
+        { label: "Error rate", get: r => fmtPct(r.error_rate_pct) },
+        { label: "Invoices", get: r => r.invoice_count },
+      ]
+    );
+    root.appendChild(c2.card);
+    lineChart(c2.chartHolder, errorData, { unit: "%", goLiveMonth: "2025-07" });
+
+    // --- Backlog by month ---
+    const backlogData = summary.backlog_by_month.map(m => ({ month: m.month, value: m.backlog_count }));
+    const c3 = chartCard(
+      "Open reconciliation backlog by month",
+      "Paid invoices with no matching bank transaction, grouped by invoice month",
+      summary.backlog_by_month,
+      [
+        { label: "Month", get: r => monthLabel(r.month) },
+        { label: "Open items", get: r => r.backlog_count },
+      ]
+    );
+    root.appendChild(c3.card);
+    barChart(c3.chartHolder, backlogData, {});
+  }
+
+  try {
+    if (!window.__KPI_DATA__ || !window.__KPI_DATA__.monthly_trend) throw new Error("no data");
+    render(window.__KPI_DATA__);
+  } catch (err) {
+    document.getElementById("fallback").style.display = "block";
+  }
+})();
+</script>
+</body>
+</html>

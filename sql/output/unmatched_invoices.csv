@@ -1,0 +1,43 @@
+invoice_id,entity_name,vendor_name,invoice_date,paid_date,amount,period
+MN-INV5026,Meridian North,Cascade Waste Management,2025-02-09,2025-03-12,13243.55,before
+MN-INV5027,Meridian North,Clearwater Cleaning Co.,2025-04-29,2025-06-06,4076.04,before
+MN-INV5051,Meridian North,Evergreen Landscaping Group,2025-03-22,2025-05-03,3022.37,before
+MN-INV5086,Meridian North,Bluepine HVAC Systems,2025-02-20,2025-03-04,18150.02,before
+MN-INV5134,Meridian North,Bluepine HVAC Systems,2025-02-04,2025-03-08,17644.96,before
+MN-INV5141,Meridian North,Evergreen Landscaping Group,2025-06-17,2025-07-24,11208.11,before
+MN-INV5150,Meridian North,Evergreen Landscaping Group,2025-06-08,2025-07-13,7456.24,before
+MN-INV5162,Meridian North,Redwood Legal Partners,2025-03-10,2025-04-22,16343.06,before
+MN-INV5184,Meridian North,Evergreen Landscaping Group,2025-07-25,2025-07-31,12430.84,after
+MN-INV5186,Meridian North,Redwood Legal Partners,2025-05-01,2025-06-05,6198.62,before
+MW-INV5010,Meridian West,Harborline Professional Services,2025-01-27,2025-03-23,5076.27,before
+MW-INV5014,Meridian West,Harborline Professional Services,2025-07-09,2025-08-04,5892.12,after
+MW-INV5017,Meridian West,Redwood Legal Partners,2025-03-28,2025-05-16,3527.28,before
+MW-INV5019,Meridian West,Harborline Professional Services,2025-09-16,2025-10-09,11852.32,after
+MW-INV5020,Meridian West,Silverline Telecom,2025-07-30,2025-08-24,367.47,after
+MW-INV5067,Meridian West,Coastal Office Supply Co.,2025-01-24,2025-03-19,8583.33,before
+MW-INV5068,Meridian West,Cascade Waste Management,2025-04-14,2025-06-04,18420.99,before
+MW-INV5074,Meridian West,Cascade Waste Management,2025-06-29,2025-08-06,17825.61,before
+MW-INV5096,Meridian West,Evergreen Landscaping Group,2025-02-16,2025-04-03,3042.24,before
+MW-INV5097,Meridian West,Redwood Legal Partners,2025-03-17,2025-05-03,6677.88,before
+MW-INV5099,Meridian West,Harborline Professional Services,2025-03-08,2025-05-06,12743.33,before
+MW-INV5106,Meridian West,Harborline Professional Services,2025-03-23,2025-05-26,1987.47,before
+MW-INV5120,Meridian West,Union Bay Insurance Brokers,2025-01-16,2025-03-14,8064.78,before
+MW-INV5121,Meridian West,Redwood Legal Partners,2025-04-16,2025-06-06,10317.96,before
+MW-INV5141,Meridian West,Harborline Professional Services,2025-04-24,2025-06-11,5087.68,before
+MW-INV5158,Meridian West,Sentinel Security Services,2025-06-25,2025-08-05,18429.15,before
+MW-INV5181,Meridian West,Harborline Professional Services,2025-04-07,2025-06-15,4106.07,before
+MC-INV5001,Meridian Coastal,Coastal Office Supply Co.,2025-03-24,2025-04-29,6215.83,before
+MC-INV5024,Meridian Coastal,Granite Ridge Contractors,2025-05-29,2025-07-21,2606.72,before
+MC-INV5026,Meridian Coastal,Summit Utilities Consulting,2025-01-21,2025-02-18,4165.33,before
+MC-INV5046,Meridian Coastal,Summit Utilities Consulting,2025-10-09,2025-10-15,1105.17,after
+MC-INV5060,Meridian Coastal,Cascade Waste Management,2025-05-21,2025-06-06,16958.73,before
+MC-INV5121,Meridian Coastal,Northgate Facilities Maintenance,2025-05-11,2025-06-20,3275.37,before
+MC-INV5124,Meridian Coastal,Bluepine HVAC Systems,2025-08-23,2025-08-24,879.46,after
+MC-INV5138,Meridian Coastal,Northgate Facilities Maintenance,2025-05-06,2025-06-30,9668.19,before
+MC-INV5154,Meridian Coastal,Peak Fleet Maintenance,2025-09-10,2025-10-03,14976.44,after
+MC-INV5167,Meridian Coastal,Northgate Facilities Maintenance,2025-02-22,2025-04-16,9702.6,before
+MC-INV5184,Meridian Coastal,Coastal Office Supply Co.,2025-05-31,2025-07-01,1295.23,before
+MC-INV5187,Meridian Coastal,Aldergrove Signage & Print,2025-03-06,2025-04-19,438.24,before
+MC-INV5191,Meridian Coastal,Brightpath IT Solutions,2025-03-14,2025-04-23,15919.08,before
+MC-INV5201,Meridian Coastal,Fraser Valley Electrical,2025-01-07,2025-02-14,7159.78,before
+MC-INV5204,Meridian Coastal,Coastal Office Supply Co.,2025-06-10,2025-07-14,10198.69,before
